@@ -1,0 +1,57 @@
+DROP TABLE IF EXISTS FeePayments;
+
+CREATE TABLE FeePayments (
+    payment_id INT PRIMARY KEY,
+    student_name VARCHAR(100) NOT NULL,
+    amount DECIMAL(10,2),
+    payment_date DATE NOT NULL
+);
+
+START TRANSACTION;
+
+INSERT INTO FeePayments (payment_id, student_name, amount, payment_date) 
+VALUES (1, 'Dhruv', 5000.00, '2024-06-01');
+
+INSERT INTO FeePayments (payment_id, student_name, amount, payment_date) 
+VALUES (2, 'Abhya', 4500.00, '2024-06-02');
+
+INSERT INTO FeePayments (payment_id, student_name, amount, payment_date) 
+VALUES (3, 'Parth', 5500.00, '2024-06-03');
+
+COMMIT;
+
+SELECT * FROM FeePayments ORDER BY payment_id;
+
+START TRANSACTION;
+
+INSERT INTO FeePayments (payment_id, student_name, amount, payment_date) 
+VALUES (4, 'Dhruv', 3500.00, '2024-06-04');
+
+ROLLBACK;
+
+SELECT * FROM FeePayments ORDER BY payment_id;
+
+START TRANSACTION;
+
+INSERT INTO FeePayments (payment_id, student_name, amount, payment_date) 
+VALUES (5, 'Abhya', 4000.00, '2024-06-05');
+
+ROLLBACK;
+
+SELECT * FROM FeePayments ORDER BY payment_id;
+
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (4, 'Parth', 3200.00, '2024-06-04');
+INSERT INTO FeePayments VALUES (5, 'Dhruv', 2800.00, '2024-06-05');
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (6, 'Amit', 3500.00, '2024-06-06');
+INSERT INTO FeePayments VALUES (7, 'Sunita', -1000.00, '2024-06-07');
+ROLLBACK;
+
+START TRANSACTION;
+INSERT INTO FeePayments VALUES (6, 'Anita', 4200.00, '2024-06-06');
+COMMIT;
+
+SELECT * FROM FeePayments ORDER BY payment_id;
