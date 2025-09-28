@@ -1,0 +1,75 @@
+DROP TABLE IF EXISTS StudentEnrollments;
+
+CREATE TABLE StudentEnrollments (
+    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_name VARCHAR(100) NOT NULL,
+    course_id VARCHAR(10) NOT NULL,
+    enrollment_date DATE NOT NULL,
+    UNIQUE KEY unique_enrollment (student_name, course_id)
+);
+
+INSERT INTO StudentEnrollments (student_name, course_id, enrollment_date)
+VALUES 
+('Dhruv', 'CSE101', '2024-07-01'),
+('Abhya', 'CSE102', '2024-07-02'),
+('Parth', 'CSE101', '2024-07-01');
+
+SELECT * FROM StudentEnrollments;
+
+START TRANSACTION;
+
+INSERT INTO StudentEnrollments (student_name, course_id, enrollment_date)
+VALUES ('Dhruv', 'CSE103', '2024-07-03');
+
+COMMIT;
+
+SELECT * FROM StudentEnrollments;
+
+START TRANSACTION;
+
+INSERT INTO StudentEnrollments (student_name, course_id, enrollment_date)
+VALUES ('Dhruv', 'CSE105', '2024-07-04');
+
+ROLLBACK;
+
+SELECT * FROM StudentEnrollments;
+
+START TRANSACTION;
+
+SELECT * FROM StudentEnrollments 
+WHERE student_name = 'Dhruv' AND course_id = 'CSE101'
+FOR UPDATE;
+
+UPDATE StudentEnrollments 
+SET enrollment_date = '2024-07-05'
+WHERE student_name = 'Dhruv' AND course_id = 'CSE101';
+
+COMMIT;
+
+SELECT * FROM StudentEnrollments;
+
+START TRANSACTION;
+
+SELECT * FROM StudentEnrollments 
+WHERE student_name = 'Abhya' AND course_id = 'CSE102'
+FOR UPDATE;
+
+UPDATE StudentEnrollments 
+SET enrollment_date = '2024-07-10'
+WHERE student_name = 'Abhya' AND course_id = 'CSE102';
+
+COMMIT;
+
+SELECT * FROM StudentEnrollments;
+
+START TRANSACTION;
+
+INSERT INTO StudentEnrollments (student_name, course_id, enrollment_date)
+VALUES ('Parth', 'CSE103', '2024-07-06');
+
+INSERT INTO StudentEnrollments (student_name, course_id, enrollment_date)
+VALUES ('Dhruv', 'CSE104', '2024-07-07');
+
+COMMIT;
+
+SELECT * FROM StudentEnrollments ORDER BY enrollment_id;
